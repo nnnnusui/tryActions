@@ -1,4 +1,4 @@
-name: HasTag
+name: Create release from Tag
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -16,8 +16,13 @@ jobs:
         echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
         echo ::set-output name=BRANCH::${GITHUB_REF#refs/heads/}
         echo ::set-output name=TAG::${GITHUB_REF#refs/tags/}
-    - name: Try echo names
-      run: |
-        echo ${{ steps.names.outputs.SOURCE_NAME }}
-        echo ${{ steps.names.outputs.BRANCH }}
-        echo ${{ steps.names.outputs.TAG }}
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.names.outputs.TAG }}
+        release_name: Release ${{ steps.names.outputs.TAG }}
+        draft: false
+        prerelease: false
