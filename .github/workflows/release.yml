@@ -1,0 +1,23 @@
+name: HasTag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set names
+      id: names
+      run: |
+        echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+        echo ::set-output name=BRANCH::${GITHUB_REF#refs/heads/}
+        echo ::set-output name=TAG::${GITHUB_REF#refs/tags/}
+    - name: Try echo names
+      run: |
+        echo ${{ steps.names.outputs.SOURCE_NAME }}
+        echo ${{ steps.names.outputs.BRANCH }}
+        echo ${{ steps.names.outputs.TAG }}
