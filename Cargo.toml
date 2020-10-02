@@ -1,6 +1,6 @@
 [package]
 name = "hello"
-version = "1.0.8"
+version = "1.0.7"
 authors = ["nnnnusui"]
 edition = "2018"
 
